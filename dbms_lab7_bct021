@@ -1,0 +1,54 @@
+/* 7. Create a view, which contain employee names and their manager
+Using Employee Database above perform the following queries
+a) Determine the names of employee, who earn more than their managers.
+b) Determine the names of employees, who take highest salary in their departments.
+c) Determine the employees, who are located at the same place.
+d) Determine the employees, whose total salary is like the minimum Salary of any
+department. 
+e) Determine the department which does not contain any employees. */
+
+-- 1. Create Dept and Emp tables
+CREATE TABLE Dept (
+    deptno INT PRIMARY KEY,
+    dname VARCHAR(50),
+    loc VARCHAR(50)
+);
+
+CREATE TABLE Emp (
+    empno INT PRIMARY KEY,
+    ename VARCHAR(50),
+    job VARCHAR(50),
+    mgr INT,
+    hiredate DATE,
+    sal DECIMAL(10, 2),
+    comm DECIMAL(10, 2),
+    deptno INT,
+    FOREIGN KEY (deptno) REFERENCES Dept(deptno),
+    FOREIGN KEY (mgr) REFERENCES Emp(empno) -- Self-referencing for manager
+);
+
+-- 2. Insert data into Dept and Emp tables
+INSERT INTO Dept VALUES (10, 'Accounting', 'New York'), (20, 'Research', 'Dallas'), (30, 'Sales', 'Chicago');
+INSERT INTO Emp VALUES (7839, 'KING', 'President', NULL, '1990-06-09', 5000, 0, 10), 
+                       (7566, 'JONES', 'Manager', 7839, '1995-06-13', 2975, 0, 20), 
+                       (7698, 'BLAKE', 'Manager', 7839, '1996-08-15', 2850, 0, 30);
+
+-- 3. Create view for employee names and managers
+CREATE VIEW Emp_Manager_View AS
+SELECT E.ename AS Employee_Name, M.ename AS Manager_Name
+FROM Emp E LEFT JOIN Emp M ON E.mgr = M.empno;
+
+-- a) Employees who earn more than their managers
+SELECT E.ename FROM Emp E JOIN Emp M ON E.mgr = M.empno WHERE E.sal > M.sal;
+
+-- b) Employees with highest salary in their department
+SELECT E.ename FROM Emp E WHERE E.sal = (SELECT MAX(sal) FROM Emp WHERE deptno = E.deptno);
+
+-- c) Employees in departments at the same location
+SELECT E.ename FROM Emp E JOIN Dept D ON E.deptno = D.deptno WHERE D.loc IN (SELECT loc FROM Dept GROUP BY loc HAVING COUNT(*) > 1);
+
+-- d) Employees whose total salary equals the minimum salary in their department
+SELECT E.ename FROM Emp E JOIN Dept D ON E.deptno = D.deptno WHERE (E.sal + COALESCE(E.comm, 0)) = (SELECT MIN(sal) FROM Emp WHERE deptno = D.deptno);
+
+-- e) Departments with no employees
+SELECT D.dname FROM Dept D LEFT JOIN Emp E ON D.deptno = E.deptno WHERE E.deptno IS NULL;
