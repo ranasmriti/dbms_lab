@@ -1,0 +1,42 @@
+/* 2. (Exercise: update the records in the table) Create Client_master with the following fields (ClientNO,
+Name, Address, City, State, bal_due)
+1. 2. 4. 5. 6. 7. create a client master table with attributes
+insert five records into the Client_Master
+3. Display Client Master Table
+Find the name of Clients whose balance_due >5000
+Change the bal_due of ClientNO “C123” to Rs. 5100
+Change the name of Client_master to Client12
+Display the bal_due heading as “BALANCE” Client master table */
+
+-- Create Client_Master table
+CREATE TABLE Client_Master (
+    ClientNO VARCHAR(10),
+    Name VARCHAR(50),
+    Address VARCHAR(100),
+    City VARCHAR(50),
+    State VARCHAR(50),
+    bal_due DECIMAL(10, 2)
+);
+
+-- Insert five records with new names
+INSERT INTO Client_Master (ClientNO, Name, Address, City, State, bal_due) VALUES
+('C001', 'Alice Johnson', '123 Maple Ave.', 'New York', 'NY', 4500.50),
+('C002', 'Bob Martinez', '456 Pine Rd.', 'Los Angeles', 'CA', 6200.75),
+('C003', 'Charlie Davis', '789 Oak Dr.', 'Chicago', 'IL', 1200.00),
+('C004', 'Diana Lee', '321 Birch Blvd.', 'Houston', 'TX', 5100.00),
+('C123', 'Ethan Brown', '987 Cedar Ln.', 'San Francisco', 'CA', 7000.25);
+
+-- Display the Client_Master table
+SELECT * FROM Client_Master;
+
+-- Find names of clients with balance due > 5000
+SELECT Name FROM Client_Master WHERE bal_due > 5000;
+
+-- Update balance due for ClientNO 'C123'
+UPDATE Client_Master SET bal_due = 5100 WHERE ClientNO = 'C123';
+
+-- Rename the table to 'Client12'
+ALTER TABLE Client_Master RENAME TO Client12;
+
+-- Display the table with 'BALANCE' heading for bal_due
+SELECT ClientNO, Name, Address, City, State, bal_due AS BALANCE FROM Client12;
