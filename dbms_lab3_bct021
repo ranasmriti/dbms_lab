@@ -1,0 +1,44 @@
+/* 3. Commands of Rollback and Commit : Create Teacher table with the following fields (Name, DeptNo,
+Date of joining, DeptName, Location, Salary)
+1. Create Teacher table with the following fields (Id,Name, DeptNo, Date of joining,
+DeptName, Location, Salary)
+2. Insert five records
+3. Give Increment of 25% salary for Mathematics Department.
+4. Perform Rollback command
+5. Give Increment of 15% salary for Commerce Department
+6. Perform commit command */
+
+-- 1. Create Teacher table
+CREATE TABLE Teacher (
+    Id INT PRIMARY KEY,
+    Name VARCHAR(50),
+    DeptNo INT,
+    Date_of_joining DATE,
+    DeptName VARCHAR(50),
+    Location VARCHAR(50),
+    Salary DECIMAL(10, 2)
+);
+
+-- 2. Insert five records with new names
+INSERT INTO Teacher (Id, Name, DeptNo, Date_of_joining, DeptName, Location, Salary) VALUES
+(1, 'Sophia Turner', 101, '2020-01-15', 'Mathematics', 'New York', 4500.00),
+(2, 'Liam Harris', 102, '2019-03-22', 'Commerce', 'Chicago', 4800.00),
+(3, 'Olivia Clark', 101, '2018-05-10', 'Mathematics', 'San Francisco', 5100.00),
+(4, 'James Walker', 103, '2021-08-30', 'Science', 'Los Angeles', 4700.00),
+(5, 'Emma Lewis', 102, '2017-11-05', 'Commerce', 'Houston', 5000.00);
+
+-- 3. Give Increment of 25% salary for Mathematics Department
+UPDATE Teacher
+SET Salary = Salary * 1.25
+WHERE DeptName = 'Mathematics';
+
+-- 4. Perform Rollback (undo the previous increment)
+ROLLBACK;
+
+-- 5. Give Increment of 15% salary for Commerce Department
+UPDATE Teacher
+SET Salary = Salary * 1.15
+WHERE DeptName = 'Commerce';
+
+-- 6. Perform Commit (save the changes)
+COMMIT;
