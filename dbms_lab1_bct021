@@ -1,0 +1,60 @@
+/* 1. (Exercise: retrieve the records from the table) EMPLOYEES (Employee_Id, First_Name, Last_Name,
+Email, Phone_Number, Hire_Date, Job_Id, Salary, Commission_Pct, Manager_Id, Department_Id)
+1. create an employee’s table with the following fields: (Emp_id, First_name, Last_name,
+Phone_No,Hire_date,Job_id,Emp_Salary,Comission_Pct,manager _id,Department_id)
+2. Insert five records into the table employees
+3. Display the table Employees
+4. Find out the employee id, names, salaries of all the employees
+5. Find the names of the employees who have a salary greater than or equal to 4800
+6. List out the employees whose last name is ‘AUSTIN’
+7. Find the names of the employees who works in departments 60,70 and 80
+8. Display the unique Manager_Id from employees table */
+
+-- 1. Create the EMPLOYEES table
+CREATE TABLE EMPLOYEES (
+    Emp_id INT PRIMARY KEY,
+    First_name VARCHAR(50),
+    Last_name VARCHAR(50),
+    Phone_No VARCHAR(15),
+    Hire_date DATE,
+    Job_id VARCHAR(10),
+    Emp_Salary DECIMAL(10, 2),
+    Commission_Pct DECIMAL(5, 2),
+    Manager_id INT,
+    Department_id INT
+); 
+
+-- 2. Insert five records into the EMPLOYEES table with new names
+INSERT INTO EMPLOYEES (Emp_id, First_name, Last_name, Phone_No, Hire_date, Job_id, Emp_Salary, Commission_Pct, Manager_id, Department_id)
+VALUES
+(1, 'Alice', 'Williams', '123-555-7890', '2021-01-15', 'IT_PROG', 5000.00, 10.00, 101, 60),
+(2, 'Bob', 'Johnson', '234-555-8901', '2020-03-20', 'SA_REP', 4500.00, 5.00, 102, 70),
+(3, 'Charlie', 'Austin', '345-555-9012', '2019-07-11', 'AD_ASST', 4800.00, 8.00, 103, 80),
+(4, 'Diana', 'Miller', '456-555-0123', '2018-10-05', 'FI_MGR', 5500.00, 12.00, 101, 60),
+(5, 'Ethan', 'Taylor', '567-555-1234', '2017-02-22', 'HR_REP', 4600.00, 6.00, 104, 70);
+
+-- 3. Display the EMPLOYEES table
+SELECT * FROM EMPLOYEES;
+
+-- 4. Find the employee ID, names, and salaries of all employees
+SELECT Emp_id, First_name, Last_name, Emp_Salary
+FROM EMPLOYEES;
+
+-- 5. Find the names of the employees who have a salary greater than or equal to 4800
+SELECT First_name, Last_name
+FROM EMPLOYEES
+WHERE Emp_Salary >= 4800;
+
+-- 6. List the employees whose last name is 'Austin'
+SELECT First_name, Last_name
+FROM EMPLOYEES
+WHERE Last_name = 'Austin';
+
+-- 7. Find the names of the employees who work in departments 60, 70, and 80
+SELECT First_name, Last_name
+FROM EMPLOYEES
+WHERE Department_id IN (60, 70, 80);
+
+-- 8. Display the unique Manager_id from the EMPLOYEES table
+SELECT DISTINCT Manager_id
+FROM EMPLOYEES;
