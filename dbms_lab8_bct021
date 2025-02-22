@@ -1,0 +1,25 @@
+/* 8. Using the tables “DEPARTMENTS” and “EMPLOYEES” above perform the following queries
+a) Display the employee details, departments that the departments are same in both the
+emp and dept.
+b) Display the employee name and Department name by implementing a left outer join.
+c) Display the employee name and Department name by implementing a right outer join.
+d) Display the details of those who draw the salary greater than the average salary. */
+
+-- a) Display employee details, departments that are the same in both emp and dept
+SELECT E.*, D.* 
+FROM EMPLOYEES E 
+JOIN DEPARTMENTS D ON E.deptno = D.deptno;
+
+-- b) Display employee name and department name using LEFT OUTER JOIN
+SELECT E.ename AS Employee_Name, D.dname AS Department_Name
+FROM EMPLOYEES E
+LEFT JOIN DEPARTMENTS D ON E.deptno = D.deptno;
+
+-- c) Display employee name and department name using RIGHT OUTER JOIN
+SELECT E.ename AS Employee_Name, D.dname AS Department_Name
+FROM EMPLOYEES E
+RIGHT JOIN DEPARTMENTS D ON E.deptno = D.deptno;
+
+-- d) Display details of employees whose salary is greater than the average salary
+SELECT * FROM EMPLOYEES 
+WHERE sal > (SELECT AVG(sal) FROM EMPLOYEES);
