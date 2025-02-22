@@ -1,0 +1,47 @@
+/* 4. (Exercise on the group by and order by clauses) Create Sales table with the following fields (Sales
+No, Salesname, Branch, Salesamount, DOB)
+1. Create a Sales Table with the following fields
+(Sales_No,Sales_Name,Branch,Sales_Amount,DOB)
+2. Insert five records
+3. 4. 5. Calculate total salesamount in each branch
+Calculate average salesamount in each branch
+Display all the salesmen, DOB who are born in the month of December as day in
+character format i.e. 21-Dec-09
+6. Display the name and DOB of salesman in alphabetical order of the month. */
+
+-- 1. Create Sales table
+CREATE TABLE Sales (
+    Sales_No INT PRIMARY KEY,
+    Sales_Name VARCHAR(50),
+    Branch VARCHAR(50),
+    Sales_Amount DECIMAL(10, 2),
+    DOB DATE
+);
+
+-- 2. Insert five records with changed names
+INSERT INTO Sales (Sales_No, Sales_Name, Branch, Sales_Amount, DOB) VALUES
+(1, 'David Miller', 'North', 5000.00, '1985-12-10'),
+(2, 'Sarah Johnson', 'South', 7000.00, '1990-06-15'),
+(3, 'Michael Brown', 'East', 6500.00, '1988-12-25'),
+(4, 'Emily Davis', 'West', 8000.00, '1992-12-05'),
+(5, 'John Wilson', 'North', 5500.00, '1987-11-20');
+
+-- 3. Calculate total sales amount in each branch
+SELECT Branch, SUM(Sales_Amount) AS Total_Sales
+FROM Sales
+GROUP BY Branch;
+
+-- 4. Calculate average sales amount in each branch
+SELECT Branch, AVG(Sales_Amount) AS Average_Sales
+FROM Sales
+GROUP BY Branch;
+
+-- 5. Display all the salesmen, DOB who are born in the month of December, formatted as '21-Dec-09'
+SELECT Sales_Name, TO_CHAR(DOB, 'DD-Mon-YY') AS DOB
+FROM Sales
+WHERE EXTRACT(MONTH FROM DOB) = 12;
+
+-- 6. Display the name and DOB of salesman in alphabetical order of the month
+SELECT Sales_Name, TO_CHAR(DOB, 'DD-Mon-YY') AS DOB
+FROM Sales
+ORDER BY TO_CHAR(DOB, 'Mon');
