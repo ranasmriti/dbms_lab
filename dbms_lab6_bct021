@@ -1,0 +1,79 @@
+/* 6. Employee Database an Enterprise wishes to maintain a database to automate its operations.
+Enterprise is divided into certain departments and each department consists of employees. The
+following two tables describes the automation schemas Dept (deptno, dname, loc) Emp (empno,
+ename, job, mgr, hiredate, sal, comm, deptno)
+1. Create Dept table: Dept (deptno, dname, loc)
+2. Create Dept table: Emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+3. Insert data int Dept and Emp tables
+4. Update the employee salary by 15%, whose experience is greater than 30 years
+5. Delete the employees, who completed 30 years of service.
+6. Display the manager who is having maximum number of employees working under
+him?
+7. Create a view, which contain employee names and their manager */
+
+-- 1. Create Dept table
+CREATE TABLE Dept (
+    deptno INT PRIMARY KEY,
+    dname VARCHAR(50),
+    loc VARCHAR(50)
+);
+
+-- 2. Create Emp table
+CREATE TABLE Emp (
+    empno INT PRIMARY KEY,
+    ename VARCHAR(50),
+    job VARCHAR(50),
+    mgr INT,
+    hiredate DATE,
+    sal DECIMAL(10, 2),
+    comm DECIMAL(10, 2),
+    deptno INT,
+    FOREIGN KEY (deptno) REFERENCES Dept(deptno),
+    FOREIGN KEY (mgr) REFERENCES Emp(empno) -- Self-referencing foreign key for manager
+);
+
+-- 3. Insert data into Dept table
+INSERT INTO Dept (deptno, dname, loc) VALUES
+(10, 'Accounting', 'New York'),
+(20, 'Research', 'Dallas'),
+(30, 'Sales', 'Chicago'),
+(40, 'Marketing', 'Los Angeles');
+
+-- Insert data into Emp table
+INSERT INTO Emp (empno, ename, job, mgr, hiredate, sal, comm, deptno) VALUES
+(7839, 'KING', 'President', NULL, '1990-06-09', 5000.00, 0, 10),
+(7566, 'JONES', 'Manager', 7839, '1995-06-13', 2975.00, 0, 20),
+(7698, 'BLAKE', 'Manager', 7839, '1996-08-15', 2850.00, 0, 30),
+(7782, 'CLARK', 'Manager', 7839, '1992-05-14', 2450.00, 0, 10),
+(7788, 'SCOTT', 'Analyst', 7566, '1996-03-05', 3000.00, 0, 20),
+(7902, 'FORD', 'Analyst', 7566, '1997-12-05', 3000.00, 0, 20),
+(7844, 'TURNER', 'Salesman', 7698, '1995-06-05', 1500.00, 0, 30),
+(7900, 'JAMES', 'Clerk', 7698, '1995-10-12', 950.00, 0, 30),
+(7654, 'MARTIN', 'Salesman', 7698, '1998-12-05', 1250.00, 1400, 30),
+(7499, 'ALLEN', 'Salesman', 7698, '1999-05-01', 1600.00, 300, 30),
+(7521, 'WARD', 'Salesman', 7698, '2000-01-21', 1250.00, 500, 30);
+
+-- 4. Update the employee salary by 15%, whose experience is greater than 30 years
+UPDATE Emp
+SET sal = sal * 1.15
+WHERE hiredate < ADD_MONTHS(SYSDATE, -360);  -- 30 years = 360 months
+
+-- 5. Delete the employees who completed 30 years of service
+DELETE FROM Emp
+WHERE hiredate <= ADD_MONTHS(SYSDATE, -360);  -- 30 years = 360 months
+
+-- 6. Display the manager who is having maximum number of employees working under him
+SELECT mgr, COUNT(*) AS num_of_employees
+FROM Emp
+GROUP BY mgr
+ORDER BY num_of_employees DESC
+FETCH FIRST 1 ROWS ONLY;
+
+-- 7. Create a view that contains employee names and their managers
+CREATE VIEW Emp_Manager_View AS
+SELECT E.ename AS Employee_Name, M.ename AS Manager_Name
+FROM Emp E
+LEFT JOIN Emp M ON E.mgr = M.empno;
+
+-- 8. Display the content of the view
+SELECT * FROM Emp_Manager_View;
